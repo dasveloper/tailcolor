@@ -1,13 +1,12 @@
-import { readFileData } from '@utils/fileReader';
 import PalettePreview from '@components/PalettePreview';
-import { paginate } from '@utils/pages';
 import Link from 'next/link';
 import Nav from '@components/Nav';
 import Footer from '@components/Footer';
 import Meta from '@components/Meta';
+import redis from '@utils/redis';
 
 export default function Home({
-  data, pages, page, total,
+  colors, pages, page, total,
 }) {
   return (
     <div className="min-h-screen">
@@ -35,7 +34,7 @@ export default function Home({
             .
           </p>
           <div className="mt-8 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data.map((r) => <PalettePreview key={r} color={r} />)}
+            {colors.map((r) => <PalettePreview key={r} color={r} />)}
           </div>
           <nav
             className="mt-4 bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
@@ -90,13 +89,18 @@ export default function Home({
   );
 }
 
+const PAGE_SIZE = 30;
 export const getServerSideProps = async (context) => {
   const { page = 1 } = context.query;
-  const colors = readFileData('colors.txt').reverse();
-
-  const paginationData = paginate(colors, 30, page);
+  const total = await redis.llen('colors');
+  const start = (page - 1) * PAGE_SIZE;
+  const end = page * PAGE_SIZE - 1;
+  const colors = await redis.lrange('colors', start, end);
+  const pages = Math.floor(total / PAGE_SIZE) + 1;
 
   return {
-    props: { ...paginationData },
+    props: {
+      total, colors, pages, page,
+    },
   };
 };

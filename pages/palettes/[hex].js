@@ -1,10 +1,10 @@
 import Palette from '@components/Palette';
 import PalettePreview from '@components/PalettePreview';
 import { getColor, getCodeString } from '@utils/colors';
-import { readFileData } from '@utils/fileReader';
 import Nav from '@components/Nav';
 import Footer from '@components/Footer';
 import Meta from '@components/Meta';
+import redis from '@utils/redis';
 
 function ColorPage({ hex }) {
   const color = getColor(hex);
@@ -116,7 +116,7 @@ function ColorPage({ hex }) {
   );
 }
 export const getStaticPaths = async () => {
-  const colors = readFileData('colors.txt');
+  const colors = await redis.lrange('colors', 0, 100);
 
   // Format postIds to path params
   const paths = colors.map((post) => ({ params: { hex: post } }));

@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { readFileData } from '@utils/fileReader';
 import PalettePreview from '@components/PalettePreview';
 import { HexColorPicker, HexColorInput } from 'react-colorful';
 import { useState } from 'react';
@@ -10,6 +9,7 @@ import Footer from '@components/Footer';
 
 import Link from 'next/link';
 import Meta from '@components/Meta';
+import redis from '@utils/redis';
 
 export default function Home({ mostRecent, total }) {
   const [color, setColor] = useState('#ffffff');
@@ -132,24 +132,11 @@ export default function Home({ mostRecent, total }) {
 }
 
 export const getStaticProps = async () => {
-  const colors = readFileData('colors.txt');
-
-  const mostRecent = colors.slice(-12).reverse();
+  const mostRecent = await redis.lrange('colors', 0, 11);
+  const total = await redis.llen('colors');
 
   return {
-    props: { mostRecent, total: colors.length },
+    props: { mostRecent, total },
     revalidate: 10,
   };
 };
-
-// const arr = [];
-// for (let i = 0; i < 100; i += 1) {
-//   const color = chroma.random().hex().replace('#', '');
-//   arr.push(color);
-// }
-// const str = `\n${arr.join('\n')}`;
-// writeFileData('colors.txt', str);
-// return {
-//   props: { },
-//   revalidate: 10,
-// };

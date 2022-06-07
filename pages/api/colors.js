@@ -1,7 +1,7 @@
 import { getColor, isValid } from '@utils/colors';
-import { writeFileData, readFileData } from '@utils/fileReader';
+import redis from '@utils/redis';
 
-export default function handler(req, res) {
+async function handler(req, res) {
   if (req.method === 'POST') {
     const { color } = req.body;
 
@@ -16,15 +16,15 @@ export default function handler(req, res) {
 
     const strippedColor = hex.slice(1);
 
-    const str = `${strippedColor}\r\n`;
-    writeFileData('colors.txt', str);
+    const str = strippedColor;
+
+    await redis.lpush('colors', str);
+
     return res.status(200).json({ color: strippedColor });
-  }
-  if (req.method === 'GET') {
-    const colors = readFileData('colors.txt').slice(0, 20);
-    return res.status(200).json({ colors });
   }
 
   // Handle any other HTTP method
   return res.status(405).json({ message: 'Method not valid' });
 }
+
+export default handler;
