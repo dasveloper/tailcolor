@@ -116,7 +116,7 @@ function ColorPage({ hex }) {
   );
 }
 export const getStaticPaths = async () => {
-  const colors = await redis.lrange('colors', 0, 100);
+  const colors = await redis.lrange('colors', 0, 5000);
 
   // Format postIds to path params
   const paths = colors.map((post) => ({ params: { hex: post } }));
