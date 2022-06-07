@@ -1,0 +1,22 @@
+{
+  "extends": ["next/core-web-vitals", "airbnb"],
+  "settings": {
+    "import/resolver": {
+      "alias": [
+          ["@components", "./components"],
+          ["@styles", "./styles"],
+          ["@utils", "./utils"]
+      ]
+    }
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off", // Needed to allow .js pages/components
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }], // Needed to allow .js pages/components
+    "jsx-a11y/anchor-is-valid": "off", // Needed too allow Next Links
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}], // Needed too allow prop-types reference
+    "react/jsx-props-no-spreading": "off", // Needed too allow App "pageProps" to be spread
+    "react/prop-types": "off", // Leaving proptypes off for example purposes 
+    "no-underscore-dangle": "off", // User to allow Mongoose _id property in code
+    "max-len": "off" // Max line length often conflicts with arrow functions see https://github.com/airbnb/javascript/issues/1532
+  }
+}
