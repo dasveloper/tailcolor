@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 function Nav() {
@@ -6,12 +5,12 @@ function Nav() {
     <header className="max-w-7xl mx-auto py-4 px-6 flex justify-between">
       <Link href="/">
         <a className="hidden md:block">
-          <Image src="/logo.svg" width={180} height={50} alt="Tailcolor logo" />
+          <img src="/logo.svg" width={180} height={50} alt="Tailcolor logo" />
         </a>
       </Link>
       <Link href="/">
         <a className="md:hidden">
-          <Image src="/logo-sm.svg" width={50} height={50} alt="Tailcolor logo" />
+          <img src="/logo-sm.svg" width={50} height={50} alt="Tailcolor logo" />
         </a>
       </Link>
       <div className="flex space-x-4 items-center">
