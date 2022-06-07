@@ -9,11 +9,9 @@ export default function PalettePreview({ color }) {
     <Link href={`/palettes/${colorObj.hex().replace('#', '')}`}>
       <a>
         <div className="p-4 border hover:bg-gray-50">
-          <h3 className="text-base">
-            <span className="uppercase">
-              {colorObj.hex()}
-            </span>
-          </h3>
+          <span className="text-base uppercase">
+            {colorObj.hex()}
+          </span>
           <div className="mt-2 w-full flex">
             {palette.map((c) => <div key={c} className="w-full h-10" style={{ backgroundColor: c }} />)}
           </div>

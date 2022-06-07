@@ -54,7 +54,7 @@ function ColorPage({ hex }) {
           </div>
           <div className="prose max-w-none w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="py-6">
-              <h4>Modify Tailwind config</h4>
+              <h3>Modify Tailwind config</h3>
               <p>
                 To use your new Tailwind palette you will need to add it to your
                 {' '}
